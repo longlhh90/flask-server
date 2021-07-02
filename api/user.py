@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.user import User
+from flask_jwt import current_identity, jwt_required
 
 
 class UserRegister(Resource):
@@ -44,7 +45,27 @@ class Users(Resource):
         help="This field cannot be blank."
     )
 
+    @jwt_required()
     def get(self):
+        # TODO: improve with role
+        # if current_identity.role == "admin":
         data = Users.parser.parse_args()
         user = User.find_by_email(data['email'])
+        if not user:
+            return {"response": "failed!!"}
+        return user.json()
+
+    @jwt_required()
+    def put(self):
+        # TODO: improve with role
+        # if current_identity.role == "admin":
+        data = Users.parser.parse_args()
+        user = User.find_by_email(data['email'])
+        if user:
+            user.password = data["password"]
+        else:
+            user = User(**data)
+
+        user.save_to_db()
+
         return user.json()
