@@ -3,6 +3,7 @@ import dotenv
 from flask import Flask
 from apiconfig import api
 from db import db
+from api.auth import jwt
 
 
 def create_app():
@@ -18,6 +19,7 @@ def create_app():
     app.config.from_object(configs)
     api.init_app(app)
     db.init_app(app)
+    jwt.init_app(app)
 
     @app.before_first_request
     def create_tables():
