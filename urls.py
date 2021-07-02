@@ -1,11 +1,11 @@
 from models.user import User
-from api.student import Student
+from api.wow import Wow
 from api.user import UserRegister, Users
 
 
 class Version1:
     list_path = [
-        (Student, "students/<string:name>/"),
+        (Wow, "wow/"),
         (UserRegister, "sign-up/"),
         (Users, "users/")
     ]
